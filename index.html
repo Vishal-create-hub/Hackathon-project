@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f7f2">
+  <title data-i18n="documentTitle">OpenDoor | Opportunities, within reach</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #202b25;
+      --muted: #747d76;
+      --line: #e6e9e1;
+      --paper: #f7f7f2;
+      --white: #fff;
+      --green: #176b4a;
+      --green-dark: #10543a;
+      --mint: #e2f1e7;
+      --orange: #e57446;
+      --yellow: #f4d469;
+      --shadow: 0 12px 36px rgba(32, 43, 37, .055);
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.5 'DM Sans', sans-serif; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; }
+    .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; clip-path: inset(50%); }
+    .shell { max-width: 1440px; min-height: 100vh; margin: auto; }
+    .topbar { height: 74px; padding: 0 6.1%; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.7); }
+    .brand { display: inline-flex; gap: 10px; align-items: center; text-decoration: none; font: 700 21px 'Space Grotesk', sans-serif; }
+    .brand-mark { width: 31px; height: 31px; display: grid; place-items: center; border-radius: 9px; background: var(--green); color: #fff; font-size: 18px; }
+    .topnav { display: flex; align-items: center; gap: 29px; }
+    .language-select select { min-height: 34px; max-width: 110px; border: 1px solid var(--line); border-radius: 6px; padding: 0 8px; background: #fff; color: var(--ink); font-size: 13px; }
+    .topnav a { color: #566159; text-decoration: none; font-weight: 600; }
+    .topnav a:hover { color: var(--green); }
+    .profile { display: flex; align-items: center; gap: 9px; padding-left: 22px; border-left: 1px solid var(--line); font-weight: 600; }
+    .profile-name-button { display: inline-flex; align-items: center; gap: 5px; border: 0; padding: 5px 0; background: transparent; color: inherit; font-weight: inherit; }
+    .profile-name-button svg { width: 14px; height: 14px; color: var(--muted); }
+    .avatar { width: 34px; height: 34px; display: grid; place-items: center; background: #f5d8c6; color: #78462d; border-radius: 50%; font-size: 13px; font-weight: 700; }
+    main { padding: 0 6.1% 64px; }
+    .hero { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 44px 0 36px; overflow: hidden; }
+    .hero::after { content: ''; position: absolute; z-index: 0; width: 210px; height: 210px; right: 7%; top: -100px; border: 1px solid #d9e5d8; border-radius: 50%; box-shadow: 0 0 0 25px rgba(226,241,231,.45), 0 0 0 52px rgba(226,241,231,.24); pointer-events: none; }
+    .hero > div, .hero > .button { position: relative; z-index: 1; }
+    .eyebrow { margin: 0 0 9px; color: var(--green); font-size: 12px; font-weight: 700; letter-spacing: 0; text-transform: uppercase; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { margin-bottom: 8px; font: 600 38px/1.14 'Space Grotesk', sans-serif; }
+    .title-accent { color: var(--green); }
+    .hero-copy { margin: 0; color: var(--muted); font-size: 16px; }
+    .hero-copy strong { color: var(--ink); font-weight: 600; }
+    .button { display: inline-flex; min-height: 42px; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 7px; padding: 0 16px; background: var(--green); color: #fff; font-weight: 700; transition: background .18s, transform .18s; }
+    .button:hover { background: var(--green-dark); transform: translateY(-1px); }
+    .button svg { width: 17px; height: 17px; }
+    .button.secondary { border: 1px solid var(--line); background: #fff; color: var(--ink); }
+    .button.secondary:hover { border-color: #b6cbbb; background: #f8fbf8; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 278px; gap: 27px; align-items: start; }
+    .board { min-width: 0; }
+    .filters { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 15px; }
+    .tabs { display: flex; gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+    .tab { border: 0; border-radius: 5px; padding: 7px 12px; background: transparent; color: #667068; font-size: 13px; font-weight: 700; white-space: nowrap; }
+    .tab.active { background: var(--green); color: #fff; }
+    .search { position: relative; flex: 0 1 248px; }
+    .search svg { position: absolute; top: 11px; left: 12px; width: 17px; color: #849087; pointer-events: none; }
+    .search input { width: 100%; height: 40px; border: 1px solid var(--line); border-radius: 7px; outline: none; padding: 0 12px 0 37px; background: #fff; }
+    .search input:focus, select:focus, input:focus, textarea:focus { border-color: #74a989; box-shadow: 0 0 0 3px rgba(23,107,74,.1); outline: none; }
+    .filters-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 18px; }
+    .filter-pills { display: flex; flex-wrap: wrap; gap: 7px; }
+    .select-wrap select { min-height: 35px; border: 1px solid var(--line); border-radius: 6px; padding: 0 28px 0 10px; background: #fff; color: #505a52; font-size: 13px; }
+    .filter-label { margin-right: 2px; color: var(--muted); font-size: 13px; }
+    .pill { border: 1px solid #e4e7e1; border-radius: 20px; padding: 6px 10px; background: #fff; color: #5c665f; font-size: 12px; font-weight: 600; }
+    .pill.active { border-color: #a9ccb3; background: var(--mint); color: var(--green-dark); }
+    .results-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; color: #667068; font-size: 13px; }
+    .results-heading strong { color: var(--ink); }
+    .demo-note { color: #858b85; font-size: 12px; }
+    .opportunity-list { display: grid; gap: 11px; }
+    .opportunity { position: relative; display: grid; grid-template-columns: 52px minmax(0,1fr) auto; gap: 14px; align-items: start; padding: 17px; border: 1px solid var(--line); border-radius: 9px; background: var(--white); box-shadow: 0 2px 6px rgba(32,43,37,.018); transition: border-color .2s, transform .2s, box-shadow .2s; animation: arrive .35s both; }
+    .opportunity:hover { border-color: #c3d6c7; box-shadow: var(--shadow); transform: translateY(-2px); }
+    @keyframes arrive { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+    .org-mark { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 10px; background: var(--mark-bg, #e7f2e8); color: var(--mark-color, #176b4a); font: 700 15px 'Space Grotesk', sans-serif; }
+    .opp-title-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 3px; }
+    .opp-title { margin: 0; font: 600 17px/1.25 'Space Grotesk', sans-serif; }
+    .opp-org { margin: 0 0 8px; color: var(--muted); font-size: 13px; }
+    .opp-meta { display: flex; flex-wrap: wrap; gap: 6px 14px; color: #59645c; font-size: 12px; }
+    .meta-item { display: inline-flex; align-items: center; gap: 5px; }
+    .meta-item svg { width: 14px; height: 14px; color: #879188; }
+    .opp-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 11px; }
+    .tag { padding: 3px 8px; border-radius: 4px; background: #f1f3ee; color: #58625a; font-size: 11px; font-weight: 600; }
+    .tag.category { background: #e7f2e8; color: #176b4a; }
+    .tag.verified { display: inline-flex; align-items: center; gap: 4px; background: #edf5ed; color: #176b4a; }
+    .tag.sample { background: #fff5df; color: #856126; }
+    .tag svg { width: 12px; height: 12px; }
+    .opp-side { display: flex; flex-direction: column; align-items: flex-end; gap: 20px; min-width: 119px; }
+    .save-button { display: grid; width: 33px; height: 33px; place-items: center; border: 1px solid var(--line); border-radius: 7px; background: white; color: #69746b; }
+    .save-button:hover, .save-button.saved { border-color: #b5d3bc; background: #f0f7f1; color: var(--green); }
+    .save-button svg { width: 17px; height: 17px; }
+    .deadline { text-align: right; color: #727c74; font-size: 11px; white-space: nowrap; }
+    .deadline strong { display: block; margin-top: 2px; color: var(--ink); font-size: 13px; }
+    .deadline.soon strong { color: #bd5434; }
+    .source-link { display: inline-flex; align-items: center; gap: 4px; margin-top: 9px; color: var(--green); font-size: 12px; font-weight: 700; text-decoration: none; }
+    .source-link:hover { text-decoration: underline; }
+    .source-link svg { width: 13px; height: 13px; }
+    .empty { padding: 45px 20px; border: 1px dashed #ccd5ca; border-radius: 8px; color: var(--muted); text-align: center; }
+    .empty strong { display: block; margin-bottom: 3px; color: var(--ink); }
+    .sidebar { display: grid; gap: 14px; }
+    .side-panel { padding: 17px; border: 1px solid var(--line); border-radius: 9px; background: #fff; }
+    .panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .panel-head h2 { margin: 0; font: 600 16px 'Space Grotesk', sans-serif; }
+    .panel-head a { color: var(--green); font-size: 12px; font-weight: 700; text-decoration: none; }
+    .deadline-item { display: grid; grid-template-columns: 41px 1fr; gap: 10px; align-items: center; padding: 10px 0; border-top: 1px solid #eff0ec; }
+    .date-box { padding: 5px 2px; border-radius: 6px; background: #fff2e9; color: #b75b35; text-align: center; }
+    .date-box span { display: block; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+    .date-box strong { display: block; font: 700 18px/1.1 'Space Grotesk', sans-serif; }
+    .deadline-copy { min-width: 0; }
+    .deadline-copy strong { display: block; overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+    .deadline-copy span { color: var(--muted); font-size: 11px; }
+    .prefs-panel { background: #e9f1e8; }
+    .prefs-panel .panel-head { margin-bottom: 6px; }
+    .prefs-panel p { margin-bottom: 12px; color: #58685b; font-size: 12px; }
+    .preference-control { display: grid; gap: 7px; }
+    .preference-control label { color: #536157; font-size: 11px; font-weight: 700; }
+    .preference-control select { height: 35px; border: 1px solid #d3e0d3; border-radius: 6px; padding: 0 9px; background: #fff; color: #303a32; font-size: 12px; }
+    .preference-control + .preference-control { margin-top: 9px; }
+    .trust-panel { background: #fffaf0; border-color: #eee6cf; }
+    .trust-panel .panel-head { margin-bottom: 6px; }
+    .trust-panel p { margin: 0; color: #6e6857; font-size: 12px; }
+    .trust-key { display: flex; align-items: center; gap: 7px; margin-top: 11px; color: #5c6258; font-size: 11px; }
+    .trust-key .tag { flex: 0 0 auto; }
+    dialog { width: min(520px, calc(100% - 28px)); max-height: 90vh; overflow-y: auto; border: 1px solid var(--line); border-radius: 10px; padding: 0; box-shadow: 0 24px 80px rgba(20,35,26,.25); }
+    dialog::backdrop { background: rgba(20,34,26,.48); backdrop-filter: blur(2px); }
+    .modal-head { display: flex; justify-content: space-between; gap: 15px; padding: 21px 23px 16px; border-bottom: 1px solid var(--line); }
+    .modal-head h2 { margin: 0; font: 600 20px 'Space Grotesk', sans-serif; }
+    .modal-head p { margin: 3px 0 0; color: var(--muted); font-size: 12px; }
+    .icon-button { display: grid; width: 32px; height: 32px; flex: 0 0 auto; place-items: center; border: 1px solid var(--line); border-radius: 6px; background: #fff; color: #5f6a61; }
+    .icon-button svg { width: 16px; height: 16px; }
+    .form-body { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; padding: 19px 23px 22px; }
+    .field { display: grid; gap: 5px; }
+    .field.full { grid-column: 1 / -1; }
+    .field label { font-size: 12px; font-weight: 700; }
+    .field input, .field select, .field textarea { width: 100%; min-height: 38px; border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; background: #fff; color: var(--ink); font-size: 13px; }
+    .field textarea { min-height: 72px; resize: vertical; }
+    .form-note { grid-column: 1 / -1; margin: 0; padding: 10px; border-radius: 6px; background: #fff6df; color: #71613d; font-size: 11px; }
+    .form-actions { grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 8px; padding-top: 3px; }
+    .toast { position: fixed; right: 22px; bottom: 22px; z-index: 5; max-width: calc(100vw - 44px); padding: 12px 16px; border-radius: 7px; background: #20372a; color: #fff; box-shadow: var(--shadow); font-size: 12px; animation: arrive .2s both; }
+    .toast[hidden] { display: none; }
+    .button:focus-visible, .tab:focus-visible, .pill:focus-visible, .save-button:focus-visible, .icon-button:focus-visible, .topnav a:focus-visible, .source-link:focus-visible, .profile-name-button:focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; }
+    @media (max-width: 980px) {
+      .topbar, main { padding-right: 4%; padding-left: 4%; }
+      .layout { grid-template-columns: minmax(0, 1fr) 250px; gap: 16px; }
+      .tabs { gap: 1px; }
+      .tab { padding: 7px 9px; }
+      .opportunity { grid-template-columns: 44px minmax(0,1fr) auto; gap: 11px; padding: 14px; }
+      .org-mark { width: 42px; height: 42px; }
+    }
+    @media (max-width: 760px) {
+      .topbar { height: 62px; }
+      .topnav { gap: 16px; }
+      .topnav a:first-child { display: none; }
+      .profile { padding-left: 12px; }
+      .profile-greeting { display: none; }
+      main { padding-bottom: 35px; }
+      .hero { padding: 32px 0 26px; }
+      h1 { font-size: 31px; }
+      .hero-copy { max-width: 410px; font-size: 14px; }
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { grid-template-columns: repeat(2, minmax(0,1fr)); align-items: start; }
+      .filters { align-items: stretch; flex-direction: column; }
+      .tabs { overflow-x: auto; }
+      .tab { flex: 0 0 auto; }
+      .search { flex-basis: auto; }
+    }
+    @media (max-width: 520px) {
+      .topbar, main { padding-right: 17px; padding-left: 17px; }
+      .brand { font-size: 19px; }
+      .topnav { gap: 12px; }
+      .topnav a { font-size: 13px; }
+      .topnav #savedNav { display: none; }
+      .language-select select { max-width: 94px; font-size: 12px; }
+      .topnav { gap: 8px; }
+      .hero { align-items: flex-start; flex-direction: column; gap: 16px; }
+      .hero::after { right: -270px; }
+      h1 { max-width: 100%; font-size: 29px; }
+      .hero .button { min-height: 39px; }
+      .filters-row { align-items: flex-start; flex-direction: column; }
+      .opportunity { grid-template-columns: 38px minmax(0,1fr) 32px; gap: 10px; padding: 12px; }
+      .org-mark { width: 38px; height: 38px; font-size: 12px; }
+      .opp-title { font-size: 15px; }
+      .opp-org { margin-bottom: 6px; font-size: 12px; }
+      .opp-meta { gap: 5px 9px; }
+      .opp-side { display: contents; }
+      .save-button { grid-column: 3; grid-row: 1; }
+      .deadline { grid-column: 2 / 4; justify-self: start; text-align: left; }
+      .source-link { margin-left: 4px; }
+      .sidebar { grid-template-columns: 1fr; }
+      .form-body { grid-template-columns: 1fr; padding: 16px; }
+      .field.full, .form-note, .form-actions { grid-column: 1; }
+      .modal-head { padding: 17px 16px 14px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="OpenDoor home"><span class="brand-mark" aria-hidden="true">↗</span>Opendoor</a>
+      <nav class="topnav" aria-label="Main navigation" data-i18n-aria="mainNavigation">
+        <a href="#opportunities" data-i18n="explore">Explore</a>
+        <a href="#opportunities" id="savedNav"><span data-i18n="saved">Saved</span> <span id="savedCount"></span></a>
+        <label class="language-select"><span class="visually-hidden" data-i18n="languageLabel">Language</span><select id="languageSelect" aria-label="Language" data-i18n-aria="languageLabel"><option value="en">English</option><option value="hi">हिन्दी</option></select></label>
+        <div class="profile"><div class="avatar" id="profileAvatar" aria-hidden="true">U</div><button class="profile-name-button" id="editProfile" type="button" aria-label="Edit display name" title="Edit display name" data-i18n-aria="editProfile" data-i18n-title="editProfile"><span class="profile-greeting"><span data-i18n="greeting">Hey,</span> <span id="displayName"></span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m14 5 5 5M4 20l4.5-.9L19 8.6a2.1 2.1 0 0 0-3-3L5.5 16.1 4 20Z"/></svg></button></div>
+      </nav>
+    </header>
+    <main id="top">
+      <section class="hero" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow" data-i18n="eyebrow">Your campus opportunity board</p>
+          <h1 id="page-title"><span data-i18n="titleLead">Find your next</span> <span class="title-accent" data-i18n="titleAccent">opportunity.</span></h1>
+          <p class="hero-copy" data-i18n="heroCopy">One place for what's next, picked for your interests.</p>
+        </div>
+        <button class="button" id="openSubmit" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span data-i18n="shareOpportunity">Share an opportunity</span></button>
+      </section>
+
+      <div class="layout" id="opportunities">
+        <section class="board" aria-label="Opportunity listings" data-i18n-aria="listingsLabel">
+          <div class="filters">
+            <div class="tabs" role="group" aria-label="Listing view">
+              <button class="tab active" type="button" aria-pressed="true" data-view="all" data-i18n="forYou">For you</button>
+              <button class="tab" type="button" aria-pressed="false" data-view="closing" data-i18n="closingSoon">Closing soon</button>
+              <button class="tab" type="button" aria-pressed="false" data-view="saved"><span data-i18n="saved">Saved</span> <span id="savedTabCount"></span></button>
+            </div>
+            <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg><input id="searchInput" type="search" placeholder="Search opportunities" aria-label="Search opportunities" data-i18n-placeholder="search" data-i18n-aria="search"></label>
+          </div>
+          <div class="filters-row">
+            <div class="filter-pills" aria-label="Filter by category">
+              <span class="filter-label" data-i18n="exploreLabel">Explore:</span>
+              <button class="pill active" type="button" aria-pressed="true" data-category="All" data-i18n="all">All</button>
+              <button class="pill" type="button" aria-pressed="false" data-category="Internship" data-i18n="internships">Internships</button>
+              <button class="pill" type="button" aria-pressed="false" data-category="Scholarship" data-i18n="scholarships">Scholarships</button>
+              <button class="pill" type="button" aria-pressed="false" data-category="Hackathon" data-i18n="hackathons">Hackathons</button>
+              <button class="pill" type="button" aria-pressed="false" data-category="Research" data-i18n="research">Research</button>
+            </div>
+            <label class="select-wrap"><select id="sortSelect" aria-label="Sort opportunities" data-i18n-aria="sort"><option value="relevant" data-i18n="sortRelevant">Sort: For you</option><option value="deadline" data-i18n="sortDeadline">Deadline: soonest</option><option value="newest" data-i18n="sortNewest">Recently added</option></select></label>
+          </div>
+          <div class="results-heading"><span><strong id="resultCount">0 opportunities</strong> <span data-i18n="toExplore">to explore</span></span><span class="demo-note" data-i18n="sampleNotice">Sample data · confirm details on linked sites</span></div>
+          <div class="opportunity-list" id="opportunityList" aria-live="polite"></div>
+        </section>
+
+        <aside class="sidebar" aria-label="Your opportunity dashboard" data-i18n-aria="dashboardLabel">
+          <section class="side-panel">
+            <div class="panel-head"><h2 data-i18n="onRadar">On your radar</h2><a href="#opportunities" id="deadlineLink" data-i18n="viewAll">View all</a></div>
+            <div id="deadlineList"></div>
+          </section>
+          <section class="side-panel prefs-panel">
+            <div class="panel-head"><h2 data-i18n="makeItYours">Make it yours</h2></div>
+            <p data-i18n="personalizeCopy">We'll bring the right opportunities closer.</p>
+            <div class="preference-control"><label for="branchSelect" data-i18n="yourField">YOUR FIELD</label><select id="branchSelect"><option value="Computer Science" data-i18n="computerScience">Computer Science</option><option value="Electronics" data-i18n="electronics">Electronics</option><option value="Mechanical" data-i18n="mechanical">Mechanical</option><option value="Business" data-i18n="business">Business</option><option value="Design" data-i18n="design">Design</option><option value="Any field" data-i18n="anyField">Any field</option></select></div>
+            <div class="preference-control"><label for="yearSelect" data-i18n="yourYear">YOUR YEAR</label><select id="yearSelect"><option value="1" data-i18n="year1">1st year</option><option value="2" data-i18n="year2">2nd year</option><option value="3" selected data-i18n="year3">3rd year</option><option value="4" data-i18n="year4">4th year</option><option value="any" data-i18n="anyYear">Any year</option></select></div>
+          </section>
+          <section class="side-panel trust-panel">
+            <div class="panel-head"><h2 data-i18n="verificationTitle">Know what's verified</h2></div>
+            <p data-i18n="verificationCopy">Demo details can change. Check the organizer's site before you apply.</p>
+            <div class="trust-key"><span class="tag verified" data-i18n="officialSite">Official site</span><span data-i18n="organizerLink">Link goes to the organizer</span></div>
+            <div class="trust-key"><span class="tag sample" data-i18n="communityTip">Community tip</span><span data-i18n="verifyBeforeApplying">Verify before applying</span></div>
+          </section>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <dialog id="submitDialog" aria-labelledby="dialogTitle" data-i18n-aria-labelledby="submitDialogTitle">
+    <form id="submitForm">
+      <div class="modal-head"><div><h2 id="dialogTitle" data-i18n="submitDialogTitle">Share something good</h2><p data-i18n="submitDialogCopy">Help someone find their next step.</p></div><button class="icon-button" id="closeDialog" type="button" aria-label="Close" data-i18n-aria="close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m18 6-12 12M6 6l12 12"/></svg></button></div>
+      <div class="form-body">
+        <div class="field full"><label for="submitTitle" data-i18n="opportunityName">Opportunity name</label><input id="submitTitle" name="title" required maxlength="90" placeholder="e.g. Summer research internship" data-i18n-placeholder="opportunityPlaceholder"></div>
+        <div class="field"><label for="submitOrg" data-i18n="organization">Organization</label><input id="submitOrg" name="organization" required maxlength="70" placeholder="Who is hosting it?" data-i18n-placeholder="organizationPlaceholder"></div>
+        <div class="field"><label for="submitCategory" data-i18n="category">Category</label><select id="submitCategory" name="category"><option value="Internship" data-i18n="internship">Internship</option><option value="Scholarship" data-i18n="scholarship">Scholarship</option><option value="Hackathon" data-i18n="hackathon">Hackathon</option><option value="Research" data-i18n="researchSingular">Research</option><option value="Competition" data-i18n="competition">Competition</option><option value="Workshop" data-i18n="workshop">Workshop</option><option value="Fellowship" data-i18n="fellowship">Fellowship</option></select></div>
+        <div class="field"><label for="submitDeadline" data-i18n="deadline">Deadline</label><input id="submitDeadline" name="deadline" type="date" required></div>
+        <div class="field"><label for="submitLink" data-i18n="officialSourceLink">Official source link</label><input id="submitLink" name="link" type="url" required placeholder="https://..."></div>
+        <div class="field full"><label for="submitEligibility" data-i18n="eligibilityLabel">Who can apply?</label><input id="submitEligibility" name="eligibility" maxlength="100" placeholder="e.g. 2nd–4th year, any branch" data-i18n-placeholder="eligibilityPlaceholder"></div>
+        <div class="field full"><label for="submitNote"><span data-i18n="noteForStudents">A note for students</span> <span style="font-weight:400;color:#7a847c" data-i18n="optional">(optional)</span></label><textarea id="submitNote" name="note" maxlength="240" placeholder="What should applicants know?" data-i18n-placeholder="notePlaceholder"></textarea></div>
+        <p class="form-note" data-i18n="communityReviewNote">Community submissions appear as unverified tips until a campus moderator checks the official source.</p>
+        <div class="form-actions"><button class="button secondary" id="cancelDialog" type="button" data-i18n="cancel">Cancel</button><button class="button" type="submit" data-i18n="sendForReview">Send for review</button></div>
+      </div>
+    </form>
+  </dialog>
+  <dialog id="profileDialog" aria-labelledby="profileDialogTitle" data-i18n-aria-labelledby="profileDialogTitle">
+    <form id="profileForm">
+      <div class="modal-head"><div><h2 id="profileDialogTitle" data-i18n="profileTitle">Your profile</h2><p id="profileDialogCopy" data-i18n="profileCopy">Choose how your name appears in the header.</p></div><button class="icon-button" id="closeProfileDialog" type="button" aria-label="Close" data-i18n-aria="close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m18 6-12 12M6 6l12 12"/></svg></button></div>
+      <div class="form-body">
+        <div class="field full"><label for="profileNameInput" data-i18n="displayNameLabel">Display name</label><input id="profileNameInput" name="displayName" required maxlength="32" autocomplete="nickname" placeholder="Enter your name" data-i18n-placeholder="displayNamePlaceholder"></div>
+        <div class="form-actions"><button class="button secondary" id="cancelProfileDialog" type="button" data-i18n="cancel">Cancel</button><button class="button" id="saveProfileName" type="submit" data-i18n="saveName">Save name</button></div>
+      </div>
+    </form>
+  </dialog>
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <script>
+    const opportunities = [
+      { id: 'gsoc', title: 'Google Summer of Code', organization: 'Google Open Source', initials: 'G', category: 'Internship', deadline: '2026-11-14', added: '2026-09-24', eligibility: 'University students, 18+', branches: ['Computer Science', 'Electronics'], years: ['2', '3', '4'], tags: ['Open source', 'Remote', 'Global'], verified: true, source: 'https://summerofcode.withgoogle.com/', color: '#e8efff', ink: '#3564b8', type: 'Program' },
+      { id: 'nasa', title: 'NASA Space Apps Challenge', organization: 'NASA & partner space agencies', initials: 'N', category: 'Hackathon', deadline: '2026-10-18', added: '2026-09-29', eligibility: 'Open to all ages and backgrounds', branches: ['Computer Science', 'Electronics', 'Mechanical', 'Design'], years: ['1', '2', '3', '4'], tags: ['Team event', 'Global', 'All disciplines'], verified: true, source: 'https://www.spaceappschallenge.org/', color: '#eceaff', ink: '#5546a5', type: 'Challenge' },
+      { id: 'mitacs', title: 'Globalink Research Internship', organization: 'Mitacs', initials: 'M', category: 'Research', deadline: '2026-11-20', added: '2026-09-20', eligibility: 'Undergraduate students in eligible countries', branches: ['Computer Science', 'Electronics', 'Mechanical'], years: ['2', '3'], tags: ['Research', 'International', '12 weeks'], verified: true, source: 'https://www.mitacs.ca/our-programs/globalink-research-internship-students/', color: '#dff3ef', ink: '#25756a', type: 'Internship' },
+      { id: 'adobe', title: 'Adobe Women-in-Technology Scholarship', organization: 'Adobe', initials: 'A', category: 'Scholarship', deadline: '2026-10-25', added: '2026-09-26', eligibility: 'Women pursuing undergraduate technology degrees', branches: ['Computer Science', 'Electronics'], years: ['2', '3', '4'], tags: ['Women in tech', 'Award', 'Undergraduate'], verified: true, source: 'https://research.adobe.com/scholarship/', color: '#ffebe5', ink: '#b54936', type: 'Scholarship' },
+      { id: 'mlh', title: 'MLH Fellowship: Open Source Track', organization: 'Major League Hacking', initials: 'MLH', category: 'Fellowship', deadline: '2026-11-02', added: '2026-09-30', eligibility: 'Students and recent graduates', branches: ['Computer Science'], years: ['2', '3', '4'], tags: ['Remote', 'Open source', 'Mentorship'], verified: true, source: 'https://fellowship.mlh.io/', color: '#fff0d9', ink: '#996120', type: 'Fellowship' },
+      { id: 'campus', title: 'Campus Climate Innovation Sprint', organization: 'Student Sustainability Cell', initials: 'CC', category: 'Hackathon', deadline: '2026-10-12', added: '2026-10-01', eligibility: 'All years and branches; teams of 2–4', branches: ['Computer Science', 'Electronics', 'Mechanical', 'Business', 'Design'], years: ['1', '2', '3', '4'], tags: ['On campus', 'Team event', 'Sustainability'], verified: false, source: 'https://example.edu/opportunities/climate-sprint', color: '#e7f2e5', ink: '#4e8050', type: 'Community tip' },
+      { id: 'research', title: 'Undergraduate Research Assistantships', organization: 'Institute Research Office', initials: 'IR', category: 'Research', deadline: '2026-10-30', added: '2026-09-28', eligibility: '2nd–4th year students; faculty referral', branches: ['Computer Science', 'Electronics', 'Mechanical'], years: ['2', '3', '4'], tags: ['On campus', 'Faculty matched', 'Part-time'], verified: false, source: 'https://example.edu/research/assistantships', color: '#f4e9fa', ink: '#81519b', type: 'Community tip' },
+      { id: 'women', title: 'Women in Computing Student Grant', organization: 'Campus Women in Tech Club', initials: 'Wi', category: 'Scholarship', deadline: '2026-11-07', added: '2026-09-25', eligibility: 'Women in any year of a computing degree', branches: ['Computer Science', 'Electronics'], years: ['1', '2', '3', '4'], tags: ['Student grant', 'On campus', 'Mentorship'], verified: false, source: 'https://example.edu/clubs/women-in-computing/grant', color: '#ffeaf0', ink: '#a74d70', type: 'Community tip' }
+    ];
+
+    const icon = {
+      clock: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.4 1.5"/></svg>',
+      pin: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M13 6.7c0 3.2-5 7.3-5 7.3S3 9.9 3 6.7a5 5 0 1 1 10 0Z"/><circle cx="8" cy="6.5" r="1.5"/></svg>',
+      check: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 8 3 3 7-7"/></svg>',
+      bookmark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 4.8A1.8 1.8 0 0 1 7.8 3h8.4A1.8 1.8 0 0 1 18 4.8V21l-6-3.7L6 21V4.8Z"/></svg>',
+      external: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 3h4v4M13 3 7 9"/><path d="M12 9v3.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .5-.5H7"/></svg>'
+    };
+    const storageKey = 'opendoor-saved-v1';
+    const customKey = 'opendoor-submissions-v1';
+    const profileKey = 'opendoor-display-name-v1';
+    function readStoredArray(key) {
+      try {
+        const value = JSON.parse(localStorage.getItem(key) || '[]');
+        return Array.isArray(value) ? value : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function persistArray(key, value) {
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
+    function initialsFor(name) {
+      return name.trim().split(/\s+/).slice(0, 2).map(part => part[0]).join('').toUpperCase() || 'U';
+    }
+
+    const displayName = document.getElementById('displayName');
+    const profileAvatar = document.getElementById('profileAvatar');
+    let hasSavedName = false;
+    try {
+      const storedName = localStorage.getItem(profileKey);
+      if (storedName && storedName.trim()) {
+        displayName.textContent = storedName.trim().slice(0, 32);
+        hasSavedName = true;
+      }
+    } catch {}
+    profileAvatar.textContent = initialsFor(displayName.textContent);
+
+    const languageKey = 'opendoor-language-v1';
+    const translations = {
+      en: {
+        documentTitle: 'OpenDoor | Opportunities, within reach', languageLabel: 'Language', mainNavigation: 'Main navigation', editProfile: 'Edit display name', explore: 'Explore', saved: 'Saved', greeting: 'Hey,',
+        eyebrow: 'Your campus opportunity board', titleLead: 'Find your next', titleAccent: 'opportunity.', heroCopy: "One place for what's next, picked for your interests.",
+        shareOpportunity: 'Share an opportunity', listingsLabel: 'Opportunity listings', dashboardLabel: 'Your opportunity dashboard', forYou: 'For you', closingSoon: 'Closing soon',
+        search: 'Search opportunities', exploreLabel: 'Explore:', all: 'All', internships: 'Internships', scholarships: 'Scholarships', hackathons: 'Hackathons', research: 'Research',
+        sort: 'Sort opportunities', sortRelevant: 'Sort: For you', sortDeadline: 'Deadline: soonest', sortNewest: 'Recently added', toExplore: 'to explore', sampleNotice: 'Sample data · confirm details on linked sites',
+        onRadar: 'On your radar', viewAll: 'View all', makeItYours: 'Make it yours', personalizeCopy: "We'll bring the right opportunities closer.", yourField: 'YOUR FIELD',
+        computerScience: 'Computer Science', electronics: 'Electronics', mechanical: 'Mechanical', business: 'Business', design: 'Design', anyField: 'Any field', yourYear: 'YOUR YEAR',
+        year1: '1st year', year2: '2nd year', year3: '3rd year', year4: '4th year', anyYear: 'Any year', verificationTitle: "Know what's verified",
+        verificationCopy: "Demo details can change. Check the organizer's site before you apply.", officialSite: 'Official site', organizerLink: 'Link goes to the organizer', communityTip: 'Community tip', verifyBeforeApplying: 'Verify before applying',
+        submitDialogTitle: 'Share something good', submitDialogCopy: 'Help someone find their next step.', close: 'Close', opportunityName: 'Opportunity name',
+        opportunityPlaceholder: 'e.g. Summer research internship', organization: 'Organization', organizationPlaceholder: 'Who is hosting it?', category: 'Category', deadline: 'Deadline', officialSourceLink: 'Official source link',
+        eligibilityLabel: 'Who can apply?', eligibilityPlaceholder: 'e.g. 2nd–4th year, any branch', noteForStudents: 'A note for students', optional: '(optional)', notePlaceholder: 'What should applicants know?',
+        communityReviewNote: 'Community submissions appear as unverified tips until a campus moderator checks the official source.', cancel: 'Cancel', sendForReview: 'Send for review',
+        profileTitle: 'Your profile', profileCopy: 'Choose how your name appears in the header.', welcomeTitle: 'Welcome to OpenDoor', welcomeNameCopy: 'What should we call you?', continue: 'Continue', displayNameLabel: 'Display name', displayNamePlaceholder: 'Enter your name', saveName: 'Save name',
+        internship: 'Internship', scholarship: 'Scholarship', hackathon: 'Hackathon', researchSingular: 'Research', competition: 'Competition', workshop: 'Workshop', fellowship: 'Fellowship',
+        typeProgram: 'Program', typeChallenge: 'Challenge', typeInternship: 'Internship', typeScholarship: 'Scholarship', typeFellowship: 'Fellowship', typeCommunityTip: 'Community tip',
+        sampleData: 'Sample data', communityUnverified: 'Community tip · unverified', categoryInternship: 'Internship', categoryScholarship: 'Scholarship', categoryHackathon: 'Hackathon', categoryResearch: 'Research', categoryFellowship: 'Fellowship',
+        tagOpenSource: 'Open source', tagRemote: 'Remote', tagGlobal: 'Global', tagTeamEvent: 'Team event', tagAllDisciplines: 'All disciplines', tagResearch: 'Research', tagInternational: 'International', tagDuration: '12 weeks',
+        tagWomenInTech: 'Women in tech', tagAward: 'Award', tagUndergraduate: 'Undergraduate', tagMentorship: 'Mentorship', tagOnCampus: 'On campus', tagSustainability: 'Sustainability',
+        tagFacultyMatched: 'Faculty matched', tagPartTime: 'Part-time', tagStudentGrant: 'Student grant', tagCommunitySubmitted: 'Community submitted',
+        eligibilityUniversity: 'University students, 18+', eligibilityEveryone: 'Open to all ages and backgrounds', eligibilityUndergraduate: 'Undergraduate students in eligible countries',
+        eligibilityWomenTech: 'Women pursuing undergraduate technology degrees', eligibilityStudents: 'Students and recent graduates', eligibilityTeams: 'All years and branches; teams of 2–4',
+        eligibilityFaculty: '2nd–4th year students; faculty referral', eligibilityWomenComputing: 'Women in any year of a computing degree',
+        daysLeft: '{count} days left', daysRemaining: '{count} days left', deadlinePassed: 'Deadline passed', dueToday: 'Due today', applicationDeadline: 'APPLICATION DEADLINE',
+        organizerWebsite: 'Organizer website', sharedSource: 'View shared source', opportunityCount: '{count} {opportunityWord}', opportunityWord: 'opportunities', opportunityWordOne: 'opportunity',
+        noMatches: 'No matches just yet', noMatchesCopy: 'Try a different filter, or share an opportunity with your community.', noDeadlines: 'No upcoming deadlines.',
+        saveListing: 'Save listing', removeSaved: 'Remove saved listing', savedToast: 'Saved to your list', removedToast: 'Removed from your saved list', storageUnavailable: 'Saved for this visit; browser storage is unavailable',
+        nameSavedToast: 'Your name is saved on this device.', nameSessionToast: 'Your name is set for this visit; browser storage is unavailable.',
+        deadlineError: 'Choose a deadline that has not passed', sourceError: 'Enter a valid official source link', httpsError: 'Source links must use HTTPS',
+        submissionSavedToast: 'Thanks! Your tip is live as unverified until checked.', submissionSessionToast: 'Your tip is available for this visit; browser storage is unavailable.'
+      },
+      hi: {
+        documentTitle: 'ओपनडोर | अवसर, आपके करीब', languageLabel: 'भाषा', mainNavigation: 'मुख्य नेविगेशन', editProfile: 'दिखाने वाला नाम बदलें', explore: 'खोजें', saved: 'सहेजे', greeting: 'नमस्ते,',
+        eyebrow: 'आपके कैंपस का अवसर बोर्ड', titleLead: 'अपना अगला', titleAccent: 'अवसर खोजें।', heroCopy: 'आपकी रुचियों के अनुसार, आगे बढ़ने का एक ही ठिकाना।',
+        shareOpportunity: 'अवसर साझा करें', listingsLabel: 'अवसर सूची', dashboardLabel: 'आपके अवसर', forYou: 'आपके लिए', closingSoon: 'अंतिम तिथि निकट',
+        search: 'अवसर खोजें', exploreLabel: 'श्रेणी:', all: 'सभी', internships: 'इंटर्नशिप', scholarships: 'छात्रवृत्ति', hackathons: 'हैकाथॉन', research: 'रिसर्च',
+        sort: 'अवसर क्रमबद्ध करें', sortRelevant: 'क्रम: आपके लिए', sortDeadline: 'अंतिम तिथि: पहले', sortNewest: 'हाल में जोड़े गए', toExplore: 'अवसर', sampleNotice: 'डेमो जानकारी · लिंक पर विवरण जाँचें',
+        onRadar: 'आने वाली अंतिम तिथियाँ', viewAll: 'सभी देखें', makeItYours: 'अपनी पसंद चुनें', personalizeCopy: 'आपके लिए सही अवसर यहाँ दिखेंगे।', yourField: 'आपका विषय',
+        computerScience: 'कंप्यूटर साइंस', electronics: 'इलेक्ट्रॉनिक्स', mechanical: 'मैकेनिकल', business: 'व्यवसाय', design: 'डिज़ाइन', anyField: 'कोई भी विषय', yourYear: 'आपका वर्ष',
+        year1: 'पहला वर्ष', year2: 'दूसरा वर्ष', year3: 'तीसरा वर्ष', year4: 'चौथा वर्ष', anyYear: 'कोई भी वर्ष', verificationTitle: 'स्रोत की जानकारी',
+        verificationCopy: 'डेमो विवरण बदल सकते हैं। आवेदन से पहले आयोजक की वेबसाइट देखें।', officialSite: 'आधिकारिक वेबसाइट', organizerLink: 'लिंक आयोजक की वेबसाइट पर है', communityTip: 'सामुदायिक सुझाव', verifyBeforeApplying: 'आवेदन से पहले जाँचें',
+        submitDialogTitle: 'अवसर साझा करें', submitDialogCopy: 'किसी और को अगला कदम खोजने में मदद करें।', close: 'बंद करें', opportunityName: 'अवसर का नाम',
+        opportunityPlaceholder: 'जैसे: ग्रीष्मकालीन रिसर्च इंटर्नशिप', organization: 'संस्था', organizationPlaceholder: 'आयोजक कौन है?', category: 'श्रेणी', deadline: 'अंतिम तिथि', officialSourceLink: 'आधिकारिक स्रोत का लिंक',
+        eligibilityLabel: 'कौन आवेदन कर सकता है?', eligibilityPlaceholder: 'जैसे: दूसरा–चौथा वर्ष, कोई भी विषय', noteForStudents: 'छात्रों के लिए जानकारी', optional: '(वैकल्पिक)', notePlaceholder: 'आवेदकों को क्या जानना चाहिए?',
+        communityReviewNote: 'कैंपस मॉडरेटर के आधिकारिक स्रोत की जाँच तक सामुदायिक सुझाव अपुष्ट दिखेंगे।', cancel: 'रद्द करें', sendForReview: 'जाँच के लिए भेजें',
+        profileTitle: 'आपकी प्रोफ़ाइल', profileCopy: 'हेडर में दिखने वाला नाम चुनें।', welcomeTitle: 'OpenDoor में आपका स्वागत है', welcomeNameCopy: 'हम आपको किस नाम से बुलाएँ?', continue: 'जारी रखें', displayNameLabel: 'दिखाने वाला नाम', displayNamePlaceholder: 'अपना नाम लिखें', saveName: 'नाम सहेजें',
+        internship: 'इंटर्नशिप', scholarship: 'छात्रवृत्ति', hackathon: 'हैकाथॉन', researchSingular: 'रिसर्च', competition: 'प्रतियोगिता', workshop: 'कार्यशाला', fellowship: 'फेलोशिप',
+        typeProgram: 'कार्यक्रम', typeChallenge: 'चुनौती', typeInternship: 'इंटर्नशिप', typeScholarship: 'छात्रवृत्ति', typeFellowship: 'फेलोशिप', typeCommunityTip: 'सामुदायिक सुझाव',
+        sampleData: 'डेमो जानकारी', communityUnverified: 'सामुदायिक सुझाव · अपुष्ट', categoryInternship: 'इंटर्नशिप', categoryScholarship: 'छात्रवृत्ति', categoryHackathon: 'हैकाथॉन', categoryResearch: 'रिसर्च', categoryFellowship: 'फेलोशिप',
+        tagOpenSource: 'ओपन सोर्स', tagRemote: 'रिमोट', tagGlobal: 'वैश्विक', tagTeamEvent: 'टीम इवेंट', tagAllDisciplines: 'सभी विषय', tagResearch: 'रिसर्च', tagInternational: 'अंतरराष्ट्रीय', tagDuration: '12 सप्ताह',
+        tagWomenInTech: 'टेक में महिलाएँ', tagAward: 'पुरस्कार', tagUndergraduate: 'स्नातक', tagMentorship: 'मेंटरशिप', tagOnCampus: 'कैंपस में', tagSustainability: 'स्थिरता',
+        tagFacultyMatched: 'फैकल्टी से जुड़ा', tagPartTime: 'अंशकालिक', tagStudentGrant: 'छात्र अनुदान', tagCommunitySubmitted: 'समुदाय द्वारा साझा',
+        eligibilityUniversity: '18+ आयु के विश्वविद्यालय छात्र', eligibilityEveryone: 'सभी आयु और पृष्ठभूमि के लिए खुला', eligibilityUndergraduate: 'योग्य देशों के स्नातक छात्र',
+        eligibilityWomenTech: 'टेक्नोलॉजी में स्नातक कर रही महिलाएँ', eligibilityStudents: 'छात्र और हाल के स्नातक', eligibilityTeams: 'सभी वर्ष और विषय; 2–4 सदस्यों की टीम',
+        eligibilityFaculty: 'दूसरे–चौथे वर्ष के छात्र; फैकल्टी की अनुशंसा', eligibilityWomenComputing: 'कंप्यूटिंग की किसी भी वर्ष की छात्राएँ',
+        daysLeft: '{count} दिन शेष', daysRemaining: '{count} दिन शेष', deadlinePassed: 'अंतिम तिथि निकल गई', dueToday: 'आज अंतिम तिथि', applicationDeadline: 'आवेदन की अंतिम तिथि',
+        organizerWebsite: 'आयोजक की वेबसाइट', sharedSource: 'साझा किया गया स्रोत देखें', opportunityCount: '{count} अवसर', opportunityWord: 'अवसर', opportunityWordOne: 'अवसर',
+        noMatches: 'अभी कोई मेल नहीं मिला', noMatchesCopy: 'दूसरा फ़िल्टर आज़माएँ या अपने समुदाय के साथ कोई अवसर साझा करें।', noDeadlines: 'कोई आगामी अंतिम तिथि नहीं।',
+        saveListing: 'अवसर सहेजें', removeSaved: 'सहेजे अवसर से हटाएँ', savedToast: 'आपकी सूची में सहेजा गया', removedToast: 'सहेजी सूची से हटा दिया गया', storageUnavailable: 'इस विज़िट के लिए सहेजा; ब्राउज़र स्टोरेज उपलब्ध नहीं है',
+        nameSavedToast: 'आपका नाम इस डिवाइस पर सहेजा गया।', nameSessionToast: 'नाम इस विज़िट के लिए सेट है; ब्राउज़र स्टोरेज उपलब्ध नहीं है।',
+        deadlineError: 'ऐसी अंतिम तिथि चुनें जो निकल न गई हो', sourceError: 'आधिकारिक स्रोत का मान्य लिंक डालें', httpsError: 'स्रोत लिंक HTTPS से शुरू होना चाहिए',
+        submissionSavedToast: 'धन्यवाद! जाँच तक आपका सुझाव अपुष्ट रहेगा।', submissionSessionToast: 'सुझाव इस विज़िट के लिए उपलब्ध है; ब्राउज़र स्टोरेज उपलब्ध नहीं है।'
+      }
+    };
+
+    const categoryKeys = { Internship: 'categoryInternship', Scholarship: 'categoryScholarship', Hackathon: 'categoryHackathon', Research: 'categoryResearch', Fellowship: 'categoryFellowship', Competition: 'competition', Workshop: 'workshop' };
+    const typeKeys = { Program: 'typeProgram', Challenge: 'typeChallenge', Internship: 'typeInternship', Scholarship: 'typeScholarship', Fellowship: 'typeFellowship', 'Community tip': 'typeCommunityTip' };
+    const tagKeys = { 'Open source': 'tagOpenSource', Remote: 'tagRemote', Global: 'tagGlobal', 'Team event': 'tagTeamEvent', 'All disciplines': 'tagAllDisciplines', Research: 'tagResearch', International: 'tagInternational', '12 weeks': 'tagDuration', 'Women in tech': 'tagWomenInTech', Award: 'tagAward', Undergraduate: 'tagUndergraduate', Mentorship: 'tagMentorship', 'On campus': 'tagOnCampus', Sustainability: 'tagSustainability', 'Faculty matched': 'tagFacultyMatched', 'Part-time': 'tagPartTime', 'Student grant': 'tagStudentGrant', 'Community submitted': 'tagCommunitySubmitted' };
+    const eligibilityKeys = { 'University students, 18+': 'eligibilityUniversity', 'Open to all ages and backgrounds': 'eligibilityEveryone', 'Undergraduate students in eligible countries': 'eligibilityUndergraduate', 'Women pursuing undergraduate technology degrees': 'eligibilityWomenTech', 'Students and recent graduates': 'eligibilityStudents', 'All years and branches; teams of 2–4': 'eligibilityTeams', '2nd–4th year students; faculty referral': 'eligibilityFaculty', 'Women in any year of a computing degree': 'eligibilityWomenComputing' };
+    const languageSelect = document.getElementById('languageSelect');
+    let currentLanguage = 'en';
+    try {
+      if (localStorage.getItem(languageKey) === 'hi') currentLanguage = 'hi';
+    } catch {}
+
+    function t(key, values = {}) {
+      let text = translations[currentLanguage][key] || translations.en[key] || key;
+      for (const [name, value] of Object.entries(values)) text = text.replaceAll(`{${name}}`, String(value));
+      return text;
+    }
+
+    function applyLanguage(language, persist = false) {
+      currentLanguage = translations[language] ? language : 'en';
+      const locale = currentLanguage === 'hi' ? 'hi-IN' : 'en';
+      document.documentElement.lang = currentLanguage;
+      document.title = t('documentTitle');
+      languageSelect.value = currentLanguage;
+      document.querySelectorAll('[data-i18n]').forEach(element => { element.textContent = t(element.dataset.i18n); });
+      document.querySelectorAll('[data-i18n-aria]').forEach(element => { element.setAttribute('aria-label', t(element.dataset.i18nAria)); });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(element => { element.placeholder = t(element.dataset.i18nPlaceholder); });
+      document.querySelectorAll('[data-i18n-title]').forEach(element => { element.title = t(element.dataset.i18nTitle); });
+      document.querySelectorAll('[data-i18n-aria-labelledby]').forEach(element => { element.setAttribute('aria-labelledby', t(element.dataset.i18nAriaLabelledby)); });
+      document.getElementById('profileNameInput').placeholder = t('displayNamePlaceholder');
+      if (persist) {
+        try { localStorage.setItem(languageKey, currentLanguage); } catch {}
+      }
+      render();
+    }
+
+    let saved = new Set(readStoredArray(storageKey));
+    let custom = readStoredArray(customKey);
+    let activeView = 'all';
+    let activeCategory = 'All';
+    let toastTimer;
+
+    const list = document.getElementById('opportunityList');
+    const resultCount = document.getElementById('resultCount');
+    const searchInput = document.getElementById('searchInput');
+    const branchSelect = document.getElementById('branchSelect');
+    const yearSelect = document.getElementById('yearSelect');
+    const allListings = () => [...custom, ...opportunities];
+    const daysUntil = date => Math.ceil((new Date(date + 'T23:59:59') - new Date()) / 86400000);
+    const prettyDate = date => new Date(date + 'T12:00:00').toLocaleDateString(currentLanguage === 'hi' ? 'hi-IN' : 'en', { month: 'short', day: 'numeric' });
+
+    function updateSavedCount() {
+      const count = saved.size;
+      document.getElementById('savedCount').textContent = count ? `(${count})` : '';
+      document.getElementById('savedTabCount').textContent = count ? ` ${count}` : '';
+    }
+
+    function cardMarkup(item, index) {
+      const remaining = daysUntil(item.deadline);
+      const savedClass = saved.has(item.id) ? ' saved' : '';
+      const verification = item.verified
+        ? `<span class="tag sample">${t('sampleData')}</span>`
+        : `<span class="tag sample">${t('communityUnverified')}</span>`;
+      const category = `<span class="tag category">${t(categoryKeys[item.category] || 'category')}</span>`;
+      const eligibility = t(eligibilityKeys[item.eligibility] || '') || item.eligibility || t('eligibilityLabel');
+      const deadlineText = remaining < 0 ? t('deadlinePassed') : remaining === 0 ? t('dueToday') : t('daysLeft', { count: remaining });
+      return `<article class="opportunity" style="animation-delay:${Math.min(index * 35, 210)}ms">
+        <div class="org-mark" style="--mark-bg:${item.color || '#e7f2e8'};--mark-color:${item.ink || '#176b4a'}" aria-hidden="true">${escapeHTML(item.initials || item.organization.slice(0, 2))}</div>
+        <div class="opp-content">
+          <div class="opp-title-row"><h3 class="opp-title">${escapeHTML(item.title)}</h3>${verification}</div>
+          <p class="opp-org">${escapeHTML(item.organization)} · ${t(typeKeys[item.type] || '') || escapeHTML(item.type || item.category)}</p>
+          <div class="opp-meta"><span class="meta-item">${icon.pin}${escapeHTML(eligibility)}</span><span class="meta-item">${icon.clock}${deadlineText}</span></div>
+          <div class="opp-tags">${category}${(item.tags || []).slice(0, 3).map(tag => `<span class="tag">${t(tagKeys[tag] || '') || escapeHTML(tag)}</span>`).join('')}</div>
+          <a class="source-link" href="${safeURL(item.source)}" target="_blank" rel="noopener noreferrer">${item.verified ? t('organizerWebsite') : t('sharedSource')}${icon.external}</a>
+        </div>
+        <div class="opp-side"><button class="save-button${savedClass}" type="button" data-save="${escapeHTML(item.id)}" aria-label="${saved.has(item.id) ? t('removeSaved') : t('saveListing')}" aria-pressed="${saved.has(item.id)}" title="${saved.has(item.id) ? t('removeSaved') : t('saveListing')}">${icon.bookmark}</button><div class="deadline${remaining <= 7 && remaining >= 0 ? ' soon' : ''}">${t('applicationDeadline')}<strong>${prettyDate(item.deadline)}</strong></div></div>
+      </article>`;
+    }
+
+    function escapeHTML(value) {
+      return String(value).replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
+    }
+
+    function safeURL(value) {
+      try { const url = new URL(value); return url.protocol === 'https:' ? escapeHTML(url.href) : '#'; }
+      catch { return '#'; }
+    }
+
+    function render() {
+      const query = searchInput.value.trim().toLowerCase();
+      const branch = branchSelect.value;
+      const year = yearSelect.value;
+      const sort = document.getElementById('sortSelect').value;
+      let filtered = allListings().filter(item => {
+        const matchesCategory = activeCategory === 'All' || item.category === activeCategory;
+        const matchesView = activeView === 'all' || (activeView === 'saved' ? saved.has(item.id) : daysUntil(item.deadline) <= 14 && daysUntil(item.deadline) >= 0);
+        const searchable = [item.title, item.organization, t(categoryKeys[item.category] || ''), t(eligibilityKeys[item.eligibility] || '') || item.eligibility, ...(item.tags || []).map(tag => t(tagKeys[tag] || '') || tag)];
+        const matchesQuery = !query || searchable.join(' ').toLowerCase().includes(query);
+        const matchesBranch = branch === 'Any field' || !item.branches?.length || item.branches.includes(branch);
+        const matchesYear = year === 'any' || !item.years?.length || item.years.includes(year);
+        return matchesCategory && matchesView && matchesQuery && matchesBranch && matchesYear && daysUntil(item.deadline) >= 0;
+      });
+      if (sort === 'deadline' || activeView === 'closing') filtered.sort((a, b) => a.deadline.localeCompare(b.deadline));
+      else if (sort === 'newest') filtered.sort((a, b) => b.added.localeCompare(a.added));
+      else filtered.sort((a, b) => Number(b.verified) - Number(a.verified) || a.deadline.localeCompare(b.deadline));
+      resultCount.textContent = t('opportunityCount', { count: filtered.length, opportunityWord: t(filtered.length === 1 ? 'opportunityWordOne' : 'opportunityWord') });
+      list.innerHTML = filtered.length ? filtered.map(cardMarkup).join('') : `<div class="empty"><strong>${t('noMatches')}</strong>${t('noMatchesCopy')}</div>`;
+      updateSavedCount();
+      renderDeadlines();
+    }
+
+    function renderDeadlines() {
+      const upcoming = allListings().filter(item => daysUntil(item.deadline) >= 0).sort((a, b) => a.deadline.localeCompare(b.deadline)).slice(0, 3);
+      document.getElementById('deadlineList').innerHTML = upcoming.length ? upcoming.map(item => {
+        const date = new Date(item.deadline + 'T12:00:00');
+        const locale = currentLanguage === 'hi' ? 'hi-IN' : 'en';
+        return `<div class="deadline-item"><div class="date-box"><span>${date.toLocaleDateString(locale, { month: 'short' })}</span><strong>${date.toLocaleDateString(locale, { day: 'numeric' })}</strong></div><div class="deadline-copy"><strong>${escapeHTML(item.title)}</strong><span>${t('daysLeft', { count: daysUntil(item.deadline) })}</span></div></div>`;
+      }).join('') : `<p class="demo-note">${t('noDeadlines')}</p>`;
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.hidden = false;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { toast.hidden = true; }, 3000);
+    }
+
+    document.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => {
+      activeView = button.dataset.view;
+      document.querySelectorAll('[data-view]').forEach(tab => {
+        const active = tab === button;
+        tab.classList.toggle('active', active);
+        tab.setAttribute('aria-pressed', String(active));
+      });
+      render();
+    }));
+
+    document.querySelectorAll('[data-category]').forEach(button => button.addEventListener('click', () => {
+      activeCategory = button.dataset.category;
+      document.querySelectorAll('[data-category]').forEach(pill => {
+        const active = pill === button;
+        pill.classList.toggle('active', active);
+        pill.setAttribute('aria-pressed', String(active));
+      });
+      render();
+    }));
+
+    list.addEventListener('click', event => {
+      const button = event.target.closest('[data-save]');
+      if (!button) return;
+      const id = button.dataset.save;
+      saved.has(id) ? saved.delete(id) : saved.add(id);
+      const persisted = persistArray(storageKey, [...saved]);
+      render();
+      showToast(persisted ? t(saved.has(id) ? 'savedToast' : 'removedToast') : t('storageUnavailable'));
+    });
+
+    [searchInput, branchSelect, yearSelect, document.getElementById('sortSelect')].forEach(control => control.addEventListener(control === searchInput ? 'input' : 'change', render));
+    languageSelect.addEventListener('change', () => applyLanguage(languageSelect.value, true));
+    document.getElementById('savedNav').addEventListener('click', () => {
+      activeView = 'saved';
+      document.querySelector('[data-view="saved"]').click();
+    });
+    document.getElementById('deadlineLink').addEventListener('click', event => {
+      event.preventDefault();
+      activeView = 'closing';
+      document.querySelector('[data-view="closing"]').click();
+    });
+
+    const dialog = document.getElementById('submitDialog');
+    document.getElementById('openSubmit').addEventListener('click', () => dialog.showModal());
+    document.getElementById('closeDialog').addEventListener('click', () => dialog.close());
+    document.getElementById('cancelDialog').addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
+    const profileDialog = document.getElementById('profileDialog');
+    const profileNameInput = document.getElementById('profileNameInput');
+    const profileDialogTitle = document.getElementById('profileDialogTitle');
+    const profileDialogCopy = document.getElementById('profileDialogCopy');
+    const closeProfileDialog = document.getElementById('closeProfileDialog');
+    const cancelProfileDialog = document.getElementById('cancelProfileDialog');
+    const saveProfileName = document.getElementById('saveProfileName');
+    function setProfileDialogMode(firstVisit) {
+      profileDialogTitle.textContent = t(firstVisit ? 'welcomeTitle' : 'profileTitle');
+      profileDialogCopy.textContent = t(firstVisit ? 'welcomeNameCopy' : 'profileCopy');
+      closeProfileDialog.hidden = firstVisit;
+      cancelProfileDialog.hidden = firstVisit;
+      saveProfileName.textContent = t(firstVisit ? 'continue' : 'saveName');
+    }
+    document.getElementById('editProfile').addEventListener('click', () => {
+      setProfileDialogMode(false);
+      profileNameInput.value = displayName.textContent;
+      profileDialog.showModal();
+      profileNameInput.focus();
+    });
+    closeProfileDialog.addEventListener('click', () => { if (hasSavedName) profileDialog.close(); });
+    cancelProfileDialog.addEventListener('click', () => { if (hasSavedName) profileDialog.close(); });
+    profileDialog.addEventListener('cancel', event => { if (!hasSavedName) event.preventDefault(); });
+    profileDialog.addEventListener('click', event => { if (event.target === profileDialog && hasSavedName) profileDialog.close(); });
+    document.getElementById('profileForm').addEventListener('submit', event => {
+      event.preventDefault();
+      const name = profileNameInput.value.trim().slice(0, 32);
+      if (!name) return;
+      displayName.textContent = name;
+      profileAvatar.textContent = initialsFor(name);
+      hasSavedName = true;
+      setProfileDialogMode(false);
+      profileDialog.close();
+      try {
+        localStorage.setItem(profileKey, name);
+        showToast(t('nameSavedToast'));
+      } catch {
+        showToast(t('nameSessionToast'));
+      }
+    });
+    document.getElementById('submitForm').addEventListener('submit', event => {
+      event.preventDefault();
+      const form = new FormData(event.currentTarget);
+      const deadline = String(form.get('deadline'));
+      if (daysUntil(deadline) < 0) { showToast(t('deadlineError')); return; }
+      let source;
+      try { source = new URL(String(form.get('link'))); } catch { showToast(t('sourceError')); return; }
+      if (source.protocol !== 'https:') { showToast(t('httpsError')); return; }
+      const title = String(form.get('title')).trim();
+      const item = {
+        id: `community-${Date.now()}`, title, organization: String(form.get('organization')).trim(), category: String(form.get('category')),
+        deadline, added: new Date().toISOString().slice(0, 10), eligibility: String(form.get('eligibility')).trim() || 'Eligibility details in official listing',
+        branches: [], years: [], tags: ['Community submitted'], verified: false, source: source.href, type: 'Community tip',
+        note: String(form.get('note')).trim(), initials: String(form.get('organization')).trim().slice(0, 2).toUpperCase(), color: '#fff0d9', ink: '#996120'
+      };
+      custom = [item, ...custom];
+      const persisted = persistArray(customKey, custom);
+      event.currentTarget.reset();
+      dialog.close();
+      activeView = 'all';
+      activeCategory = 'All';
+      searchInput.value = '';
+      document.querySelectorAll('[data-category]').forEach(pill => {
+        const active = pill.dataset.category === 'All';
+        pill.classList.toggle('active', active);
+        pill.setAttribute('aria-pressed', String(active));
+      });
+      document.querySelector('[data-view="all"]').click();
+      showToast(persisted ? t('submissionSavedToast') : t('submissionSessionToast'));
+    });
+
+    applyLanguage(currentLanguage);
+    if (!hasSavedName) {
+      setProfileDialogMode(true);
+      profileDialog.showModal();
+      profileNameInput.focus();
+    }
+  </script>
+</body>
+</html>
